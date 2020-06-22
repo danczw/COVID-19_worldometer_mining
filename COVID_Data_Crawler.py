@@ -5,7 +5,7 @@ import pandas as pd
 import re
 import datetime
 
-url = "https://www.worldometers.info/coronavirus/"  # set target url
+url = "https://www.worldometers.info/coronavirus/#countries"  # set target url
 user_agent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7'  # user agent
 headers = {'User-Agent': user_agent}  # add user agent to request header
 
@@ -43,13 +43,14 @@ for cell in table_cells:
     except ValueError:
         data.append(cell[1:-1])
 
-data = data[:-13]  # delete last 13 entries (which are total rows in original table)
-data_array = np.reshape(np.array(data), (-1, 13))  # reshape list to array of size 212 x 11
+data = data[:-19]  # delete last 13 entries (which are total rows in original table)
+data_array = np.reshape(np.array(data), (-1, 19))  # reshape list to array of size 212 x 11
 
 # transform array to dataframe and add col names
-df = pd.DataFrame(data_array, columns=["Country", "Total Cases", "New Cases", "Total Deaths", "New Deaths",
-                                       "Total Recovered", "Active Cases", "Serious, Critical", "Tot Cases/1M pop",
-                                       "Deaths/ 1M pop", "Total Tests", "Tests/ 1M pop", "Continent"])
+df = pd.DataFrame(data_array, columns=["ID", "Country", "Total Cases", "New Cases", "Total Deaths", "New Deaths",
+                                       "Total Recovered", "New Recovered", "Active Cases", "Serious, Critical", "Tot Cases/1M pop",
+                                       "Deaths/ 1M pop", "Total Tests", "Tests/ 1M pop", "Population", "Continent", "1 Case every X people",
+                                       "1 Death every X people", "1 Test every X ppl"])
 
 """
 2nd part cleans up country names and saves data to excel
@@ -67,6 +68,7 @@ for i in ctry:
     except AttributeError:
         ctry_clean.append("NO COUNTRY")
 df["Country"] = ctry_clean  # save cleaned country data to df
-
+del df["Population"]
+df.reset_index()
 df[8:-7].to_csv(f"{datetime.datetime.now().date()} COVID-19 worldwide.csv", sep=";")  # save data to excel
 print("Excel printed!")
