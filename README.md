@@ -8,3 +8,5 @@ COVID-19 worldwide data for 2020-04-12 is included.
 COVID-19 worldwide data for 2020-04-18 is included.
 
 COVID-19 worldwide data for 2020-06-22 is included.
+
+COVID-19 worldwide data for 2020-07-27 is included.
