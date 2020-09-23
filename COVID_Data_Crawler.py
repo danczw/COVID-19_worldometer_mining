@@ -4,6 +4,9 @@ import numpy as np
 import pandas as pd
 import re
 import datetime
+import os
+
+dir_path = os.path.dirname(os.path.realpath(__file__)) # get current file path for saving excel to same path later
 
 url = "https://www.worldometers.info/coronavirus/#countries"  # set target url
 user_agent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7'  # user agent
@@ -68,7 +71,8 @@ for i in ctry:
     except AttributeError:
         ctry_clean.append("NO COUNTRY")
 df["Country"] = ctry_clean  # save cleaned country data to df
-del df["Population"]
-df.reset_index()
-df[8:-7].to_csv(f"{datetime.datetime.now().date()} COVID-19 worldwide.csv", sep=";")  # save data to excel
-print("Excel printed!")
+df = df[8:-7] # drop not needed rows (i.e. aggregated rows for continents)
+df.reset_index(inplace=True)
+df.drop(["Population", "index"], axis = 1, inplace=True)
+df.to_csv(f"{dir_path}\\{datetime.datetime.now().date()} COVID-19 worldwide.csv", sep=";")  # save data to excel
+print(f"Excel printed to {dir_path}!") # show file location
