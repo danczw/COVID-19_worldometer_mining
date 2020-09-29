@@ -73,6 +73,6 @@ for i in ctry:
 df["Country"] = ctry_clean  # save cleaned country data to df
 df = df[8:-7] # drop not needed rows (i.e. aggregated rows for continents)
 df.reset_index(inplace=True)
-df.drop(["Population", "index"], axis = 1, inplace=True)
+df.drop(["Population", "index", "ID"], axis = 1, inplace=True)
 df.to_csv(f"{dir_path}\\{datetime.datetime.now().date()} COVID-19 worldwide.csv", sep=";")  # save data to excel
 print(f"Excel printed to {dir_path}!") # show file location
